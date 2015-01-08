@@ -7,6 +7,8 @@
 //
 
 #include "LogoScene.h"
+#include "KawazLogo_acf.h"
+#include "main.h"
 
 USING_NS_CC;
 
@@ -19,7 +21,9 @@ LogoScene::LogoScene()
 , _z(nullptr)
 , _clearout(nullptr)
 , _logo(nullptr)
+, _cueSheet(nullptr)
 , _finalScale(0.0f)
+, _hasEnded(false)
 {
     
 }
@@ -34,6 +38,7 @@ LogoScene::~LogoScene(){
     CC_SAFE_RELEASE_NULL(_z);
     CC_SAFE_RELEASE_NULL(_clearout);
     CC_SAFE_RELEASE_NULL(_logo);
+    CC_SAFE_RELEASE_NULL(_cueSheet);
     
 }
 
@@ -49,11 +54,14 @@ bool LogoScene::init(){
         return false;
     }
     
+    auto cuesheet = ADX2::CueSheet::create("adx/KawazLogo.acf", "adx/main.acb");
+    this->setCueSheet(cuesheet);
+    
     auto director = Director::getInstance();
     
     auto isLandScape = director->getWinSize().width >= director->getWinSize().height;
     
-    this->setFinalScale((isLandScape ? 0.8f : 0.55f));
+    this->setFinalScale((isLandScape ? 0.75f : 0.55f));
     
     //各パーツを読み込み、準備
     auto frog = Sprite::create("Parts/Frog.png");
@@ -62,7 +70,7 @@ bool LogoScene::init(){
     
     auto K = Sprite::create("Parts/K.png");
     K->setScale(_finalScale);
-    K->setPosition(Vec2(director->getWinSize().width * (isLandScape ? 0.2f : 0.1f) +
+    K->setPosition(Vec2(director->getWinSize().width * (isLandScape ? 0.25f : 0.1f) +
                         (frog->getContentSize().width / 2 + K->getContentSize().width / 2) * _finalScale +
                         (isLandScape ? 0.0f : director->getWinSize().width * 0.05),
                         director->getWinSize().height * 1.5));
@@ -124,25 +132,32 @@ void LogoScene::onEnterTransitionDidFinish(){
     auto isLandScape = (director->getWinSize().width >= director->getWinSize().height);
     
     //カエルの部分のアニメーション　ズームアウト後、画面の左端から画面の幅の20%(縦画面なら12.5%)のところに陣取る
-    auto FRanimation = ScaleTo::create(0.6f, _finalScale);
-    auto FRanimationEL = EaseElasticOut::create(FRanimation, 2.0f) ;
+    auto FRanimationSound = CallFunc::create([this](){
+        this->getCueSheet()->playCueByID(CRI_MAIN_FROG);
+    });
+    auto FRanimation = ScaleTo::create(1.0f, _finalScale);
+    auto FRanimationEL = EaseElasticOut::create(FRanimation, 3.0f);
     auto FRanimationEP = EaseOut::create(FRanimation, 3.0f);
-    auto FRanimation2_1 = MoveBy::create(0.6f, Vec2::ZERO); //最初は動かない(ことを明示)(Delaytimeでもよい)
-    auto FRanimation2_2 = MoveBy::create(0.4f, Vec2(-director->getWinSize().width * (isLandScape ? 0.3f : 0.375f), 0));
+    auto FRanimation2_1 = MoveBy::create(1.0f, Vec2::ZERO); //最初は動かない(ことを明示)(Delaytimeでもよい)
+    auto FRanimation2_2 = MoveBy::create(0.4f, Vec2(-director->getWinSize().width * (isLandScape ? 0.25f : 0.375f), 0));
     auto FRanimation2 = Sequence::create(FRanimation2_1, FRanimation2_2, NULL);
     auto FRanimation2EIO = EaseInOut::create(FRanimation2, 5.0f);
     if (isLandScape){
-        auto FrSeq = Spawn::create(FRanimationEL, FRanimation2EIO, NULL);
+        auto FrSeq = Spawn::create(FRanimationSound, FRanimationEL, FRanimation2EIO, NULL);
         this->getFrog()->runAction(FrSeq);
     }
     else{
-        auto FrSeq = Spawn::create(FRanimationEP, FRanimation2EIO, NULL);
+        auto FrSeq = Spawn::create(FRanimationSound, FRanimationEP, FRanimation2EIO, NULL);
         this->getFrog()->runAction(FrSeq);
     }
 
-    auto wait4Frog = DelayTime::create(1.5f); //カエルアニメーションが終わるのを待つ
+    auto wait4Frog = DelayTime::create(2.0f); //カエルアニメーションが終わるのを待つ
     
     //まずアニメーションを全て作成する
+    //音の再生タイミングは落ちた時。
+    auto FallSound = CallFunc::create([this](){
+        this->getCueSheet()->playCueByID(CRI_MAIN_LETTERANDMAIN);
+    });
     //落っこちて(落っこちる距離は確定していて画面の高さ分)
     auto FallAction = MoveBy::create(0.2f, Vec2(0, -director->getWinSize().height));
     //その際に重力で引き延ばされて
@@ -151,7 +166,7 @@ void LogoScene::onEnterTransitionDidFinish(){
     //着地した時ゼリーみたいに震えさせてみたり
     auto LandTremble = EaseElasticOut::create((ScaleTo::create(0.5f,_finalScale)));
     //あとは適用をはじめる
-    auto KAction = Sequence::create(wait4Frog, Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
+    auto KAction = Sequence::create(wait4Frog, Fall, Spawn::create(FallSound, LandTremble,CallFunc::create([this, Fall, LandTremble](){
         this->getA1()->runAction(Sequence::create(Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
             this->getW()->runAction(Sequence::create(Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
                 this->getA2()->runAction(Sequence::create(Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
@@ -177,12 +192,21 @@ void LogoScene::onEnterTransitionDidFinish(){
         auto appear = FadeTo::create(0.4f, 255);
         this->getLogo()->runAction(Spawn::create(ShrinkInto,appear, NULL));
     });
-    this->getClearOut()->runAction(Sequence::create(DelayTime::create(3.27f),Spawn::create(coExpand, LogoSpawn, NULL),NULL));
+    this->getClearOut()->runAction(Sequence::create(DelayTime::create(3.5f),Spawn::create(coExpand, LogoSpawn, NULL), DelayTime::create(2.0f), CallFunc::create([this](){
+        this->setHasEnded(true);
+                                                            }), NULL));
     
     this->scheduleUpdate();
     
 }
 
 void LogoScene::update(float dt){
+    
+    
+    if (_hasEnded){
+        auto scene = LogoScene::createScene();
+        Director::getInstance()->replaceScene(scene);
+    }
+    
     
 }

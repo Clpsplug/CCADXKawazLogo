@@ -27,6 +27,7 @@ public:
     
     
     CC_SYNTHESIZE(float, _finalScale, FinalScale);
+    CC_SYNTHESIZE(bool, _hasEnded, HasEnded);
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite *, _frog, Frog);
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite *, _K, K);
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite *, _a1,A1);
@@ -35,6 +36,7 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite *, _z, Z);
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite *, _clearout, ClearOut);
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite *, _logo, Logo);
+    CC_SYNTHESIZE_RETAIN(ADX2::CueSheet *, _cueSheet, CueSheet);
     
     CREATE_FUNC(LogoScene);
 };

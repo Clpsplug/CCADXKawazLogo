@@ -47,7 +47,7 @@ namespace ADX2 {
         
         auto acfPath = fp(acf);
         auto acbPath = fp(acb);
-        
+    
         criAtomEx_RegisterAcfFile(NULL, acfPath.c_str(), NULL, 0);
         if (awb) {
             auto awbPath = fp(awb);

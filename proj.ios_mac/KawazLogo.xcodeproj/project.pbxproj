@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		199A59D71A5EC8370008B753 /* adx in Resources */ = {isa = PBXBuildFile; fileRef = 199A59D61A5EC8370008B753 /* adx */; };
+		199A59DB1A5ECB980008B753 /* iphone in Resources */ = {isa = PBXBuildFile; fileRef = 199A59DA1A5ECB980008B753 /* iphone */; };
 		19B45E611A5D657C0080498C /* CueSheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B45E5D1A5D657C0080498C /* CueSheet.cpp */; };
 		19B45E621A5D657C0080498C /* Manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B45E5F1A5D657C0080498C /* Manager.cpp */; };
 		19B45E641A5D66EA0080498C /* libcri_ware_ios_LE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B45E631A5D66EA0080498C /* libcri_ware_ios_LE.a */; };
@@ -108,6 +110,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		199A59D41A5EC8280008B753 /* KawazLogo_acf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KawazLogo_acf.h; sourceTree = "<group>"; };
+		199A59D51A5EC8280008B753 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		199A59D61A5EC8370008B753 /* adx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = adx; sourceTree = "<group>"; };
+		199A59DA1A5ECB980008B753 /* iphone */ = {isa = PBXFileReference; lastKnownFileType = folder; path = iphone; sourceTree = "<group>"; };
 		19B45E5C1A5D657C0080498C /* ADX2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADX2Manager.h; sourceTree = "<group>"; };
 		19B45E5D1A5D657C0080498C /* CueSheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CueSheet.cpp; sourceTree = "<group>"; };
 		19B45E5E1A5D657C0080498C /* CueSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CueSheet.h; sourceTree = "<group>"; };
@@ -304,6 +310,8 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				199A59DA1A5ECB980008B753 /* iphone */,
+				199A59D61A5EC8370008B753 /* adx */,
 				19F559851A5E916D00F063F0 /* 750-1334.png */,
 				19F559861A5E916D00F063F0 /* 1334-750.png */,
 				19F559871A5E916D00F063F0 /* Clearout.png */,
@@ -326,8 +334,10 @@
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
 				46880B8719C43A87006E1F66 /* HelloWorldScene.h */,
+				199A59D41A5EC8280008B753 /* KawazLogo_acf.h */,
 				19B45E661A5D68240080498C /* LogoScene.cpp */,
 				19B45E671A5D68240080498C /* LogoScene.h */,
+				199A59D51A5EC8280008B753 /* main.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -488,7 +498,9 @@
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				19F559891A5E916D00F063F0 /* 750-1334.png in Resources */,
 				46880B8119C43A67006E1F66 /* HelloWorld.png in Resources */,
+				199A59D71A5EC8370008B753 /* adx in Resources */,
 				46880B7D19C43A67006E1F66 /* CloseSelected.png in Resources */,
+				199A59DB1A5ECB980008B753 /* iphone in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
