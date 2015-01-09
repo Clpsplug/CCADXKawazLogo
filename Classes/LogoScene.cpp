@@ -33,7 +33,7 @@
  * ファイルの時点でパーツとなっているKawazロゴを１つにして、プログラム上でパーツにさせる
  */
 #include "LogoScene.h"
-#include "KawazLogo_acf.h" //TODO : ここをプロジェクトのacfに置き換えること(ゲーム変数やAISACは使ってないので多分大丈夫)
+#include "KawazLogo_acf.h" //TODO:: ここをプロジェクトのacfに置き換えること(ゲーム変数やAISACは使ってないので多分大丈夫)
 #include "logo.h"
 
 USING_NS_CC;
@@ -81,7 +81,7 @@ bool LogoScene::init(){
     }
     
     // キューシートを開く
-    // TODO : プロジェクトのフォルダ構成に応じてacf, acbのパスを指定
+    // TODO:: プロジェクトのフォルダ構成に応じてacf, acbのパスを指定
     auto cuesheet = ADX2::CueSheet::create("adx/KawazLogo.acf", "adx/logo.acb");
     this->setCueSheet(cuesheet);
     
@@ -93,7 +93,7 @@ bool LogoScene::init(){
     this->setFinalScale((isLandScape ? 0.70f : 0.55f));
     
     // 各パーツを読み込み、準備
-    // FIXME : ロゴがファイルの時点でパーツとなっているのはライセンス規約的にまずいかも。コードの中で処理させる
+    // FIXME:: ロゴがファイルの時点でパーツとなっているのはライセンス規約的にまずいかも。コードの中で処理させる
     auto frog = Sprite::create("logo/Parts/Frog.png");
     frog->setScale(50.0f);
     frog->setPosition(director->getWinSize() / 2);
@@ -182,7 +182,7 @@ void LogoScene::onEnterTransitionDidFinish(){
         this->getFrog()->runAction(Sequence::create(firstDelay, FrSeq, NULL));
     }
 
-    auto wait4Frog = DelayTime::create(2.0f); //カエルアニメーションが終わるのを待つ
+    auto wait4Frog = DelayTime::create(2.5f); //カエルアニメーションが終わるのを待つ
     
     //まずアニメーションを全て作成する
     //音の再生タイミングは落ちた時。
@@ -199,7 +199,7 @@ void LogoScene::onEnterTransitionDidFinish(){
     auto LandTremble = EaseElasticOut::create((ScaleTo::create(0.5f,_finalScale)));
     
     /* あとは適用をはじめる
-     * FIXME : (本当は各スプライトに対してそれぞれ設定したかったのだが、
+     * FIXME:: (本当は各スプライトに対してそれぞれ設定したかったのだが、
      * 複数のノードに個別のActionをそれぞれのスタックに一気に乗せすぎると
      * ActionManager内でTargetがNULLになってゲームが落ちるとか
      * Actionが実行されないとか予期しない動きをする謎バグを踏んだため
@@ -237,7 +237,7 @@ void LogoScene::onEnterTransitionDidFinish(){
         auto appear = FadeTo::create(0.4f, 255);
         this->getLogo()->runAction(Sequence::create(DelayTime::create(0.2f),Spawn::create(ShrinkInto,appear, NULL), NULL));
     });
-    this->getClearOut()->runAction(Sequence::create(DelayTime::create(3.3f),Spawn::create(coExpand, LogoSpawn, NULL), DelayTime::create(2.0f), CallFunc::create([this](){
+    this->getClearOut()->runAction(Sequence::create(DelayTime::create(3.8f),Spawn::create(coExpand, LogoSpawn, NULL), DelayTime::create(2.0f), CallFunc::create([this](){
         this->setHasEnded(true);
                                                             }), NULL));
     
@@ -250,7 +250,7 @@ void LogoScene::update(float dt){
     
     if (_hasEnded){
         
-        /* TODO : ここで次のシーンへ遷移します。行き先のシーンのヘッダファイルをIncludeするのをわすれずに
+        /* TODO:: ここで次のシーンへ遷移します。行き先のシーンのヘッダファイルをIncludeするのをわすれずに
          * Example : 以下の例はこのシーンをリピートします。
          * [Beginning of code]
          * this->unscheduleUpdate();
