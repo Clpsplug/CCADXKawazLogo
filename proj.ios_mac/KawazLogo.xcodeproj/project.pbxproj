@@ -7,16 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1946EBD81A5F9F64003361FC /* logo in Resources */ = {isa = PBXBuildFile; fileRef = 1946EBD71A5F9F64003361FC /* logo */; };
 		199A59D71A5EC8370008B753 /* adx in Resources */ = {isa = PBXBuildFile; fileRef = 199A59D61A5EC8370008B753 /* adx */; };
 		199A59DB1A5ECB980008B753 /* iphone in Resources */ = {isa = PBXBuildFile; fileRef = 199A59DA1A5ECB980008B753 /* iphone */; };
 		19B45E611A5D657C0080498C /* CueSheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B45E5D1A5D657C0080498C /* CueSheet.cpp */; };
 		19B45E621A5D657C0080498C /* Manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B45E5F1A5D657C0080498C /* Manager.cpp */; };
 		19B45E641A5D66EA0080498C /* libcri_ware_ios_LE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B45E631A5D66EA0080498C /* libcri_ware_ios_LE.a */; };
 		19B45E681A5D68240080498C /* LogoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B45E661A5D68240080498C /* LogoScene.cpp */; };
-		19F559891A5E916D00F063F0 /* 750-1334.png in Resources */ = {isa = PBXBuildFile; fileRef = 19F559851A5E916D00F063F0 /* 750-1334.png */; };
-		19F5598A1A5E916D00F063F0 /* 1334-750.png in Resources */ = {isa = PBXBuildFile; fileRef = 19F559861A5E916D00F063F0 /* 1334-750.png */; };
-		19F5598B1A5E916D00F063F0 /* Clearout.png in Resources */ = {isa = PBXBuildFile; fileRef = 19F559871A5E916D00F063F0 /* Clearout.png */; };
-		19F5598C1A5E916D00F063F0 /* Parts in Resources */ = {isa = PBXBuildFile; fileRef = 19F559881A5E916D00F063F0 /* Parts */; };
 		1AC6FB21180E996B004C840B /* libcocos2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAF9180E9839004C840B /* libcocos2d Mac.a */; };
 		1AC6FB30180E99EB004C840B /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB07180E9839004C840B /* libcocos2d iOS.a */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -32,8 +29,6 @@
 		46880B8219C43A67006E1F66 /* HelloWorld.png in Resources */ = {isa = PBXBuildFile; fileRef = 46880B7A19C43A67006E1F66 /* HelloWorld.png */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
-		46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */; };
-		46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
 		503AE10017EB989F00D1A890 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FB17EB989F00D1A890 /* AppController.mm */; };
 		503AE10117EB989F00D1A890 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FC17EB989F00D1A890 /* main.m */; };
@@ -110,8 +105,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1946EBD71A5F9F64003361FC /* logo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = logo; sourceTree = "<group>"; };
+		1946EBDA1A5FB89F003361FC /* logo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logo.h; sourceTree = "<group>"; };
 		199A59D41A5EC8280008B753 /* KawazLogo_acf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KawazLogo_acf.h; sourceTree = "<group>"; };
-		199A59D51A5EC8280008B753 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		199A59D61A5EC8370008B753 /* adx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = adx; sourceTree = "<group>"; };
 		199A59DA1A5ECB980008B753 /* iphone */ = {isa = PBXFileReference; lastKnownFileType = folder; path = iphone; sourceTree = "<group>"; };
 		19B45E5C1A5D657C0080498C /* ADX2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADX2Manager.h; sourceTree = "<group>"; };
@@ -122,10 +118,6 @@
 		19B45E631A5D66EA0080498C /* libcri_ware_ios_LE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcri_ware_ios_LE.a; path = ../adx2/libs/ios/libcri_ware_ios_LE.a; sourceTree = "<group>"; };
 		19B45E661A5D68240080498C /* LogoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogoScene.cpp; sourceTree = "<group>"; };
 		19B45E671A5D68240080498C /* LogoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoScene.h; sourceTree = "<group>"; };
-		19F559851A5E916D00F063F0 /* 750-1334.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "750-1334.png"; sourceTree = "<group>"; };
-		19F559861A5E916D00F063F0 /* 1334-750.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1334-750.png"; sourceTree = "<group>"; };
-		19F559871A5E916D00F063F0 /* Clearout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Clearout.png; sourceTree = "<group>"; };
-		19F559881A5E916D00F063F0 /* Parts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Parts; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -138,8 +130,6 @@
 		46880B7A19C43A67006E1F66 /* HelloWorld.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelloWorld.png; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorldScene.cpp; sourceTree = "<group>"; };
-		46880B8719C43A87006E1F66 /* HelloWorldScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloWorldScene.h; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE0FA17EB989F00D1A890 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppController.h; path = ios/AppController.h; sourceTree = SOURCE_ROOT; };
@@ -310,12 +300,9 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1946EBD71A5F9F64003361FC /* logo */,
 				199A59DA1A5ECB980008B753 /* iphone */,
 				199A59D61A5EC8370008B753 /* adx */,
-				19F559851A5E916D00F063F0 /* 750-1334.png */,
-				19F559861A5E916D00F063F0 /* 1334-750.png */,
-				19F559871A5E916D00F063F0 /* Clearout.png */,
-				19F559881A5E916D00F063F0 /* Parts */,
 				521A8EA819F11F5000D177D7 /* fonts */,
 				3EACC98E19EE6D4300EB3C5E /* res */,
 				46880B7619C43A67006E1F66 /* CloseNormal.png */,
@@ -329,15 +316,13 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1946EBDA1A5FB89F003361FC /* logo.h */,
 				19B45E5B1A5D657C0080498C /* ADX2Manager */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
-				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
-				46880B8719C43A87006E1F66 /* HelloWorldScene.h */,
 				199A59D41A5EC8280008B753 /* KawazLogo_acf.h */,
 				19B45E661A5D68240080498C /* LogoScene.cpp */,
 				19B45E671A5D68240080498C /* LogoScene.h */,
-				199A59D51A5EC8280008B753 /* main.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -493,16 +478,15 @@
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
-				19F5598C1A5E916D00F063F0 /* Parts in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
-				19F559891A5E916D00F063F0 /* 750-1334.png in Resources */,
 				46880B8119C43A67006E1F66 /* HelloWorld.png in Resources */,
 				199A59D71A5EC8370008B753 /* adx in Resources */,
 				46880B7D19C43A67006E1F66 /* CloseSelected.png in Resources */,
 				199A59DB1A5ECB980008B753 /* iphone in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
+				1946EBD81A5F9F64003361FC /* logo in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
@@ -512,9 +496,7 @@
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				3EACC98F19EE6D4300EB3C5E /* res in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
-				19F5598B1A5E916D00F063F0 /* Clearout.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
-				19F5598A1A5E916D00F063F0 /* 1334-750.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */,
 				46880B7B19C43A67006E1F66 /* CloseNormal.png in Resources */,
@@ -545,7 +527,6 @@
 				19B45E621A5D657C0080498C /* Manager.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				19B45E611A5D657C0080498C /* CueSheet.cpp in Sources */,
-				46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				19B45E681A5D68240080498C /* LogoScene.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
@@ -559,7 +540,6 @@
 			files = (
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
-				46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

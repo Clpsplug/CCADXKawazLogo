@@ -2,7 +2,7 @@
 //  LogoScene.h
 //  KawazLogo
 //
-//  Created by 有働 篤人 on 1/7/15.
+//  Created by CollapsedPlug on 1/7/15.
 //
 //
 
