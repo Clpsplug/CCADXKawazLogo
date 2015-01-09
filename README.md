@@ -1,10 +1,11 @@
-#Animated Kawaz Logo using cocos2d-x v3.3 and ADX2 LE
+#Animated Kawaz Logo for iOS Games using cocos2d-x v3.3 and ADX2 LE
 
 Kawazの動画ロゴをiOSゲーに組み込もうとしたら、横向きのやつしかなかったので縦横両対応の動画ロゴを作ってみた。
 
 ##Requirements
 * cocos2d-x v3.3 or above
 * ADX2 LE
+* iOS
 
 ##How to use this
 ###どんなのか見る
