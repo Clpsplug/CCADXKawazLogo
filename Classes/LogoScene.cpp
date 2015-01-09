@@ -255,11 +255,16 @@ void LogoScene::update(float dt){
          * [Beginning of code]
          * this->unscheduleUpdate();
          * auto scene = LogoScene::createScene();
-         * auto sceneTr = TransitionFade::create(scene);
+         * auto sceneTr = TransitionFade::create(1.0f,scene);
          * Director::getInstance()->replaceScene(sceneTr);
          * [End of code]
          * 注意 : this->unscheduleUpdate();を実行しないとsceneが生成され続けて予期しない結果を生むことがあります。
          */
+        this->unscheduleUpdate();
+        auto scene = LogoScene::createScene();
+        auto sceneTr = TransitionFade::create(1.0f,scene);
+        Director::getInstance()->replaceScene(sceneTr);
+
     }
     
     
