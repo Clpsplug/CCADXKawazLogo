@@ -50,6 +50,7 @@ LogoScene::LogoScene()
 , _cueSheet(nullptr)
 , _finalScale(0.0f)
 , _hasEnded(false)
+, _isNonSense(false)
 {
     
 }
@@ -152,6 +153,34 @@ bool LogoScene::init(){
     this->addChild(clearout);
     this->addChild(logo);
     
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->onTouchBegan = [this](Touch * touch, Event * event){
+        
+        if (_isNonSense){
+            return false;
+        }
+        
+        //タッチされたら全てのアクションがストップ
+        for (Node * node: this->getChildren()){
+            node->stopAllActions();
+        }
+        //Kawazロゴになる
+        this->getLogo()->setScale(1.0f);
+        this->getLogo()->setOpacity(255);
+        this->getCueSheet()->stop(CRI_LOGO_FROG);
+        this->getCueSheet()->stop(CRI_LOGO_LETTERANDMAIN);
+        this->getCueSheet()->playCueByID(CRI_LOGO_SKIPPED);
+        
+        auto passon = Sequence::create(DelayTime::create(2.0f), CallFunc::create([this](){
+            this->setHasEnded(true);
+        }), NULL);
+        
+        this->getLogo()->runAction(passon);
+        
+        return  true;
+    };
+    director->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    
     return true;
 }
 
@@ -205,6 +234,13 @@ void LogoScene::onEnterTransitionDidFinish(){
      * Actionが実行されないとか予期しない動きをする謎バグを踏んだため
      * やむなくラムダを入れ子にした。非常にまずいコードであるのは承知の上だが)
      */
+    /* giginet said in the issue https://github.com/Clpsplug/CCADXKawazLogo/issues/2#issuecomment-70356370 :
+     * Actionは内部状態も保持しているため、複数のアクションキューで使い回すことができない
+     * 1. ラムダを定義する
+     * 2. ラムダをコピーする
+     * 3. それらを使って別々のCallFuncアクションを作る
+     * ってやると上手く行く気がする（未確認）
+     */
     auto KawazAction = Sequence::create(wait4Frog, Fall, Spawn::create(FallSound, LandTremble,CallFunc::create([this, Fall, LandTremble](){
         this->getA1()->runAction(Sequence::create(Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
             this->getW()->runAction(Sequence::create(Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
@@ -236,6 +272,7 @@ void LogoScene::onEnterTransitionDidFinish(){
         auto ShrinkInto = ScaleTo::create(0.4f, 1.0f / director->getContentScaleFactor());
         auto appear = FadeTo::create(0.4f, 255);
         this->getLogo()->runAction(Sequence::create(DelayTime::create(0.2f),Spawn::create(ShrinkInto,appear, NULL), NULL));
+        this->setIsNonSence(true);
     });
     this->getClearOut()->runAction(Sequence::create(DelayTime::create(3.8f),Spawn::create(coExpand, LogoSpawn, NULL), DelayTime::create(2.0f), CallFunc::create([this](){
         this->setHasEnded(true);

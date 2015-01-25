@@ -82,7 +82,7 @@ namespace ADX2 {
     {
         criAtomExPlayback_Stop(playbackID);
     }
-        
+    
     const char* CueSheet::getCueName(CriAtomExCueId cueID)
     {
         return criAtomExAcb_GetCueNameById(_acb, cueID);

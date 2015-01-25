@@ -37,6 +37,7 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite *, _clearout, ClearOut);
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite *, _logo, Logo);
     CC_SYNTHESIZE_RETAIN(ADX2::CueSheet *, _cueSheet, CueSheet);
+    CC_SYNTHESIZE(bool, _isNonSense, IsNonSence); //is it nonsence to skip now??
     
     CREATE_FUNC(LogoScene);
 };
