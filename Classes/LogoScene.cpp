@@ -9,7 +9,7 @@
 /* What's this
  * cocos2d-x v3.3とADX2 LEを使用して制作したKawazの動画ロゴシーン。
  * ADX2 LEを使用しているプロジェクトならいろんな面で組み込みが簡単です。
- * なお、開発にあたっては 
+ * なお、開発にあたっては
  * giginet氏のCCADX2Manager ( https://github.com/giginet/CCADX2Manager )を利用させていただきました。
  * 現在、16:9/9:16の画面に対応しています。ただし、このシーン中に縦横が切り替わることは想定していません。
  */
@@ -108,8 +108,8 @@ bool LogoScene::init(){
     auto a1 = Sprite::create("logo/Parts/a.png");
     a1->setScale(_finalScale);
     a1->setPosition(Vec2(K->getPositionX() +
-                        (K->getContentSize().width / 2 + a1->getContentSize().width / 2) * _finalScale,
-                        director->getWinSize().height * 1.5));
+                         (K->getContentSize().width / 2 + a1->getContentSize().width / 2) * _finalScale,
+                         director->getWinSize().height * 1.5));
     auto w = Sprite::create("logo/Parts/w.png");
     w->setScale(_finalScale);
     w->setPosition(Vec2(a1->getPositionX() +
@@ -123,9 +123,9 @@ bool LogoScene::init(){
     auto z = Sprite::create("logo/Parts/z.png");
     z->setScale(_finalScale);
     z->setPosition(Vec2(a2->getPositionX() +
-                         (a2->getContentSize().width / 2 + z->getContentSize().width / 2) * _finalScale,
-                         director->getWinSize().height * 1.5));
-
+                        (a2->getContentSize().width / 2 + z->getContentSize().width / 2) * _finalScale,
+                        director->getWinSize().height * 1.5));
+    
     auto clearout = Sprite::create("logo/Clearout.png");
     clearout->setScale(0.0f);
     clearout->setPosition(director->getWinSize() / 2); //クソ横着なことをしたが反省はしていない
@@ -159,6 +159,8 @@ bool LogoScene::init(){
         if (_isNonSense){
             return false;
         }
+        
+        this->setIsNonSence(true);
         
         //タッチされたら全てのアクションがストップ
         for (Node * node: this->getChildren()){
@@ -210,7 +212,7 @@ void LogoScene::onEnterTransitionDidFinish(){
         auto FrSeq = Spawn::create(FRanimationSound, FRanimationEP, FRanimation2, NULL);
         this->getFrog()->runAction(Sequence::create(firstDelay, FrSeq, NULL));
     }
-
+    
     auto wait4Frog = DelayTime::create(2.5f); //カエルアニメーションが終わるのを待つ
     
     //まずアニメーションを全て作成する
@@ -253,18 +255,18 @@ void LogoScene::onEnterTransitionDidFinish(){
     _K->runAction(KawazAction);
     
     /* 本来のコードがこちら。こちらの方がラムダを入れ子にするより見易いのだが、
-       これを実行すると、なぜかクラスMoveByのメンバstartWithTargetが、その引数Target = NULLの状態で呼ばれて、
-       ゲームが落ちた
-       auto KAction = Sequence::create(wait4Frog, FallSequence, NULL);
-       _K->runAction(KAction);
-       auto a1Action = Sequence::create(wait4Frog, DelayTime::create(0.2f), FallSequence, NULL);
-       _a1->runAction(a1Action);
-       auto wAction = Sequence::create(wait4Frog, DelayTime::create(0.4f), FallSequence, NULL);
-       _w->runAction(wAction);
-       auto a2Action = Sequence::create(wait4Frog, DelayTime::create(0.6f), FallSequence, NULL);
-       _a2->runAction(a2Action);
-       auto zAction = Sequence::create(wait4Frog, DelayTime::create(0.8f), FallSequence, NULL);
-       _z->runAction(zAction);
+     これを実行すると、なぜかクラスMoveByのメンバstartWithTargetが、その引数Target = NULLの状態で呼ばれて、
+     ゲームが落ちた
+     auto KAction = Sequence::create(wait4Frog, FallSequence, NULL);
+     _K->runAction(KAction);
+     auto a1Action = Sequence::create(wait4Frog, DelayTime::create(0.2f), FallSequence, NULL);
+     _a1->runAction(a1Action);
+     auto wAction = Sequence::create(wait4Frog, DelayTime::create(0.4f), FallSequence, NULL);
+     _w->runAction(wAction);
+     auto a2Action = Sequence::create(wait4Frog, DelayTime::create(0.6f), FallSequence, NULL);
+     _a2->runAction(a2Action);
+     auto zAction = Sequence::create(wait4Frog, DelayTime::create(0.8f), FallSequence, NULL);
+     _z->runAction(zAction);
      */
     
     auto coExpand = EaseIn::create(ScaleTo::create(1.2f, 400.0f), 3.0f);
@@ -276,7 +278,7 @@ void LogoScene::onEnterTransitionDidFinish(){
     });
     this->getClearOut()->runAction(Sequence::create(DelayTime::create(3.8f),Spawn::create(coExpand, LogoSpawn, NULL), DelayTime::create(2.0f), CallFunc::create([this](){
         this->setHasEnded(true);
-                                                            }), NULL));
+    }), NULL));
     
     this->scheduleUpdate();
     
@@ -301,7 +303,7 @@ void LogoScene::update(float dt){
         auto scene = LogoScene::createScene();
         auto sceneTr = TransitionFade::create(1.0f,scene);
         Director::getInstance()->replaceScene(sceneTr);
-
+        
     }
     
     
