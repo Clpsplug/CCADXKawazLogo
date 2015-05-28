@@ -25,6 +25,7 @@ public:
     void onEnterTransitionDidFinish() override;
     void update(float dt);
     
+    cocos2d::Action* createSequence(float delay);
     
     CC_SYNTHESIZE(float, _finalScale, FinalScale);
     CC_SYNTHESIZE(bool, _hasEnded, HasEnded);

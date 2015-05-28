@@ -213,61 +213,18 @@ void LogoScene::onEnterTransitionDidFinish(){
         this->getFrog()->runAction(Sequence::create(firstDelay, FrSeq, NULL));
     }
     
-    auto wait4Frog = DelayTime::create(2.5f); //カエルアニメーションが終わるのを待つ
-    
     //まずアニメーションを全て作成する
     //音の再生タイミングは落ちた時。
     auto FallSound = CallFunc::create([this](){
         this->getCueSheet()->playCueByID(CRI_LOGO_LETTERANDMAIN);
     });
-    //落っこちて(落っこちる距離は確定していて画面の高さ分)
-    auto FallActio = MoveBy::create(0.2f, Vec2(0, -director->getWinSize().height));
-    auto FallAction = EaseIn::create(FallActio, 2.0f);
-    //その際に重力で引き延ばされて
-    auto FallStretch = ScaleBy::create(0.1f,1.0f, 1.2f);
-    auto Fall = Spawn::create(FallAction, FallStretch, NULL);
-    //着地した時ゼリーみたいに震えさせてみたり
-    auto LandTremble = EaseElasticOut::create((ScaleTo::create(0.5f,_finalScale)));
     
-    /* あとは適用をはじめる
-     * FIXME:: (本当は各スプライトに対してそれぞれ設定したかったのだが、
-     * 複数のノードに個別のActionをそれぞれのスタックに一気に乗せすぎると
-     * ActionManager内でTargetがNULLになってゲームが落ちるとか
-     * Actionが実行されないとか予期しない動きをする謎バグを踏んだため
-     * やむなくラムダを入れ子にした。非常にまずいコードであるのは承知の上だが)
-     */
-    /* giginet said in the issue https://github.com/Clpsplug/CCADXKawazLogo/issues/2#issuecomment-70356370 :
-     * Actionは内部状態も保持しているため、複数のアクションキューで使い回すことができない
-     * 1. ラムダを定義する
-     * 2. ラムダをコピーする
-     * 3. それらを使って別々のCallFuncアクションを作る
-     * ってやると上手く行く気がする（未確認）
-     */
-    auto KawazAction = Sequence::create(wait4Frog, Fall, Spawn::create(FallSound, LandTremble,CallFunc::create([this, Fall, LandTremble](){
-        this->getA1()->runAction(Sequence::create(Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
-            this->getW()->runAction(Sequence::create(Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
-                this->getA2()->runAction(Sequence::create(Fall, Spawn::create(LandTremble,CallFunc::create([this, Fall, LandTremble](){
-                    this->getZ()->runAction(Sequence::create(Fall, LandTremble, NULL));
-                }), NULL), NULL));
-            }), NULL), NULL));
-        }), NULL), NULL));
-    }), NULL), NULL);
-    _K->runAction(KawazAction);
-    
-    /* 本来のコードがこちら。こちらの方がラムダを入れ子にするより見易いのだが、
-     これを実行すると、なぜかクラスMoveByのメンバstartWithTargetが、その引数Target = NULLの状態で呼ばれて、
-     ゲームが落ちた
-     auto KAction = Sequence::create(wait4Frog, FallSequence, NULL);
-     _K->runAction(KAction);
-     auto a1Action = Sequence::create(wait4Frog, DelayTime::create(0.2f), FallSequence, NULL);
-     _a1->runAction(a1Action);
-     auto wAction = Sequence::create(wait4Frog, DelayTime::create(0.4f), FallSequence, NULL);
-     _w->runAction(wAction);
-     auto a2Action = Sequence::create(wait4Frog, DelayTime::create(0.6f), FallSequence, NULL);
-     _a2->runAction(a2Action);
-     auto zAction = Sequence::create(wait4Frog, DelayTime::create(0.8f), FallSequence, NULL);
-     _z->runAction(zAction);
-     */
+    // 各スプライトに対してアニメーションを実行
+    _K->runAction(Spawn::create(Sequence::create(DelayTime::create(2.7f),FallSound,NULL),this->createSequence(2.5f),NULL));
+    _a1->runAction(this->createSequence(2.7f));
+    _w->runAction(this->createSequence(2.9f));
+    _a2->runAction(this->createSequence(3.1f));
+    _z->runAction(this->createSequence(3.3f));
     
     auto coExpand = EaseIn::create(ScaleTo::create(1.2f, 400.0f), 3.0f);
     auto LogoSpawn = CallFunc::create([this,director](){
@@ -282,6 +239,16 @@ void LogoScene::onEnterTransitionDidFinish(){
     
     this->scheduleUpdate();
     
+}
+
+Action* LogoScene::createSequence(float delay){
+    auto FallAction = MoveBy::create(0.2f, Vec2(0, -Director::getInstance()->getWinSize().height));
+    auto FallActionEase = EaseIn::create(FallAction, 2.0f);
+    auto FallStretch = ScaleBy::create(0.1f,1.0f, 1.2f);
+    auto Fall = Spawn::create(FallActionEase, FallStretch, NULL);
+    auto LandTremble = EaseElasticOut::create((ScaleTo::create(0.5f,_finalScale)));
+    
+    return Sequence::create(DelayTime::create(delay), Fall, LandTremble, NULL);
 }
 
 void LogoScene::update(float dt){
