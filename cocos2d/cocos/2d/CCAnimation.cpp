@@ -2,7 +2,7 @@
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-CopyRight (c) 2013-2014 Chukong Technologies Inc.
+CopyRight (c) 2013-2016 Chukong Technologies Inc.
  
 http://www.cocos2d-x.org
 
@@ -70,19 +70,19 @@ AnimationFrame::~AnimationFrame()
 
 AnimationFrame* AnimationFrame::clone() const
 {
-	// no copy constructor
-	auto frame = new (std::nothrow) AnimationFrame();
+    // no copy constructor
+    auto frame = new (std::nothrow) AnimationFrame();
     frame->initWithSpriteFrame(_spriteFrame->clone(),
-							   _delayUnits,
-							   _userInfo);
+                               _delayUnits,
+                               _userInfo);
 
-	frame->autorelease();
-	return frame;
+    frame->autorelease();
+    return frame;
 }
 
 // implementation of Animation
 
-Animation* Animation::create(void)
+Animation* Animation::create()
 {
     Animation *animation = new (std::nothrow) Animation();
     animation->init();
@@ -191,12 +191,12 @@ float Animation::getDuration(void) const
 
 Animation* Animation::clone() const
 {
-	// no copy constructor	
-	auto a = new (std::nothrow) Animation();
+    // no copy constructor    
+    auto a = new (std::nothrow) Animation();
     a->initWithAnimationFrames(_frames, _delayPerUnit, _loops);
     a->setRestoreOriginalFrame(_restoreOriginalFrame);
-	a->autorelease();
-	return a;
+    a->autorelease();
+    return a;
 }
 
 NS_CC_END

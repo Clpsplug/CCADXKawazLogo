@@ -1,12 +1,14 @@
 
 
-#include "TextFieldReader.h"
+#include "editor-support/cocostudio/WidgetReader/TextFieldReader/TextFieldReader.h"
 
 #include "ui/UITextField.h"
-#include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary_generated.h"
+#include "platform/CCFileUtils.h"
+#include "editor-support/cocostudio/CocoLoader.h"
+#include "editor-support/cocostudio/CSParseBinary_generated.h"
+#include "editor-support/cocostudio/LocalizationManager.h"
 
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
@@ -47,6 +49,11 @@ namespace cocostudio
             instanceTextFieldReader = new (std::nothrow) TextFieldReader();
         }
         return instanceTextFieldReader;
+    }
+    
+    void TextFieldReader::destroyInstance()
+    {
+        CC_SAFE_DELETE(instanceTextFieldReader);
     }
     
     void TextFieldReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *cocoLoader, stExpCocoNode* cocoNode)
@@ -106,8 +113,13 @@ namespace cocostudio
        
         textField->setFontSize(DICTOOL->getIntValue_json(options, P_FontSize,20));
     
-       
-        textField->setFontName(DICTOOL->getStringValue_json(options, P_FontName, ""));
+        std::string jsonPath = GUIReader::getInstance()->getFilePath();
+        std::string fontName = DICTOOL->getStringValue_json(options, P_FontName, "");
+        std::string fontFilePath = jsonPath.append(fontName);
+        if (FileUtils::getInstance()->isFileExist(fontFilePath))
+            textField->setFontName(fontFilePath);
+        else
+            textField->setFontName(fontName);
         
         bool tsw = DICTOOL->checkObjectExist_json(options, P_TouchSizeWidth);
         bool tsh = DICTOOL->checkObjectExist_json(options, P_TouchSizeHeight);
@@ -154,6 +166,7 @@ namespace cocostudio
         std::string fontName = "";
         int fontSize = 20;
         std::string text = "";
+        bool isLocalized = false;
         std::string placeHolder = "Text Field";
         bool passwordEnabled = false;
         std::string passwordStyleText = "*";
@@ -178,6 +191,10 @@ namespace cocostudio
             else if (name == "LabelText")
             {
                 text = value;
+            }
+            else if (name == "IsLocalized")
+            {
+                isLocalized = (value == "True") ? true : false;
             }
             else if (name == "FontSize")
             {
@@ -263,8 +280,8 @@ namespace cocostudio
                                               maxLength,
                                               areaWidth,
                                               areaHeight,
-                                              isCustomSize
-                                              );
+                                              isCustomSize,
+                                              isLocalized);
         
         return *(Offset<Table>*)(&options);
     }
@@ -278,7 +295,20 @@ namespace cocostudio
         textField->setPlaceHolder(placeholder);
         
         std::string text = options->text()->c_str();
-        textField->setString(text);
+        bool isLocalized = options->isLocalized() != 0;
+        if (isLocalized)
+        {
+            ILocalizationManager* lm = LocalizationHelper::getCurrentManager();
+            std::string localizedTxt = lm->getLocalizationString(text);
+            std::string::size_type newlineIndex = localizedTxt.find("\n");
+            if (newlineIndex != std::string::npos)
+                localizedTxt = localizedTxt.substr(0, newlineIndex);
+            textField->setString(localizedTxt);
+        }
+        else
+        {
+            textField->setString(text);
+        }
         
         int fontSize = options->fontSize();
         textField->setFontSize(fontSize);
@@ -286,7 +316,7 @@ namespace cocostudio
         std::string fontName = options->fontName()->c_str();
         textField->setFontName(fontName);
         
-        bool maxLengthEnabled = options->maxLengthEnabled();
+        bool maxLengthEnabled = options->maxLengthEnabled() != 0;
         textField->setMaxLengthEnabled(maxLengthEnabled);
         
         if (maxLengthEnabled)
@@ -294,7 +324,7 @@ namespace cocostudio
             int maxLength = options->maxLength();
             textField->setMaxLength(maxLength);
         }
-        bool passwordEnabled = options->passwordEnabled();
+        bool passwordEnabled = options->passwordEnabled() != 0;
         textField->setPasswordEnabled(passwordEnabled);
         if (passwordEnabled)
         {
@@ -303,11 +333,25 @@ namespace cocostudio
         }
         
         
+        bool fileExist = false;
+        std::string errorFilePath = "";
         auto resourceData = options->fontResource();
         std::string path = resourceData->path()->c_str();
         if (path != "")
         {
-            textField->setFontName(path);
+            if (FileUtils::getInstance()->isFileExist(path))
+            {
+                fileExist = true;
+            }
+            else
+            {
+                errorFilePath = path;
+                fileExist = false;
+            }
+            if (fileExist)
+            {
+                textField->setFontName(path);
+            }
         }
         
         auto widgetReader = WidgetReader::getInstance();
@@ -323,6 +367,8 @@ namespace cocostudio
             Size contentSize(widgetOptions->size()->width(), widgetOptions->size()->height());
             textField->setContentSize(contentSize);
         }
+        
+        
     }
     
     Node* TextFieldReader::createNodeWithFlatBuffers(const flatbuffers::Table *textFieldOptions)

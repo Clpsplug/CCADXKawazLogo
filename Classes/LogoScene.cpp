@@ -212,13 +212,13 @@ void LogoScene::onEnterTransitionDidFinish(){
         auto FrSeq = Spawn::create(FRanimationSound, FRanimationEP, FRanimation2, NULL);
         this->getFrog()->runAction(Sequence::create(firstDelay, FrSeq, NULL));
     }
-    
+
     //まずアニメーションを全て作成する
     //音の再生タイミングは落ちた時。
     auto FallSound = CallFunc::create([this](){
         this->getCueSheet()->playCueByID(CRI_LOGO_LETTERANDMAIN);
     });
-    
+
     // 各スプライトに対してアニメーションを実行
     _K->runAction(Spawn::create(Sequence::create(DelayTime::create(2.7f),FallSound,NULL),this->createSequence(2.5f),NULL));
     _a1->runAction(this->createSequence(2.7f));

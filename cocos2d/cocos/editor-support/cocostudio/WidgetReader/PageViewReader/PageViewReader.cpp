@@ -1,14 +1,16 @@
 
 
-#include "PageViewReader.h"
+#include "editor-support/cocostudio/WidgetReader/PageViewReader/PageViewReader.h"
 
 #include "ui/UIPageView.h"
 #include "ui/UILayout.h"
-#include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary_generated.h"
-#include "cocostudio/FlatBuffersSerialize.h"
+#include "platform/CCFileUtils.h"
+#include "2d/CCSpriteFrameCache.h"
+#include "editor-support/cocostudio/CocoLoader.h"
+#include "editor-support/cocostudio/CSParseBinary_generated.h"
+#include "editor-support/cocostudio/FlatBuffersSerialize.h"
 
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
@@ -38,6 +40,11 @@ namespace cocostudio
             instancePageViewReader = new (std::nothrow) PageViewReader();
         }
         return instancePageViewReader;
+    }
+    
+    void PageViewReader::destroyInstance()
+    {
+        CC_SAFE_DELETE(instancePageViewReader);
     }
     
     void PageViewReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *cocoLoader, stExpCocoNode *cocoNode)
@@ -311,10 +318,10 @@ namespace cocostudio
         PageView* pageView = static_cast<PageView*>(node);
         auto options = (PageViewOptions*)pageViewOptions;
         
-        bool clipEnabled = options->clipEnabled();
+        bool clipEnabled = options->clipEnabled() != 0;
         pageView->setClippingEnabled(clipEnabled);
         
-        bool backGroundScale9Enabled = options->backGroundScale9Enabled();
+        bool backGroundScale9Enabled = options->backGroundScale9Enabled() != 0;
         pageView->setBackGroundImageScale9Enabled(backGroundScale9Enabled);
         
         
@@ -339,11 +346,66 @@ namespace cocostudio
         pageView->setBackGroundColorOpacity(bgColorOpacity);
         
         
+        bool fileExist = false;
+        std::string errorFilePath = "";
         auto imageFileNameDic = options->backGroundImageData();
         int imageFileNameType = imageFileNameDic->resourceType();
         std::string imageFileName = imageFileNameDic->path()->c_str();
-        pageView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
-        
+        if (imageFileName != "")
+        {
+            switch (imageFileNameType)
+            {
+                case 0:
+                {
+                    if (FileUtils::getInstance()->isFileExist(imageFileName))
+                    {
+                        fileExist = true;
+                    }
+                    else
+                    {
+                        errorFilePath = imageFileName;
+                        fileExist = false;
+                    }
+                    break;
+                }
+                    
+                case 1:
+                {
+                    std::string plist = imageFileNameDic->plistFile()->c_str();
+                    SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
+                    if (spriteFrame)
+                    {
+                        fileExist = true;
+                    }
+                    else
+                    {
+                        if (FileUtils::getInstance()->isFileExist(plist))
+                        {
+                            ValueMap value = FileUtils::getInstance()->getValueMapFromFile(plist);
+                            ValueMap metadata = value["metadata"].asValueMap();
+                            std::string textureFileName = metadata["textureFileName"].asString();
+                            if (!FileUtils::getInstance()->isFileExist(textureFileName))
+                            {
+                                errorFilePath = textureFileName;
+                            }
+                        }
+                        else
+                        {
+                            errorFilePath = plist;
+                        }
+                        fileExist = false;
+                    }
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+            if (fileExist)
+            {
+                pageView->setBackGroundImage(imageFileName, (Widget::TextureResType)imageFileNameType);
+            }
+        }
         
         auto widgetOptions = options->widgetOptions();
         auto f_color = widgetOptions->color();

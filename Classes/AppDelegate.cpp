@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "LogoScene.h"
+//#include "ADXManager.h"
 
 USING_NS_CC;
 

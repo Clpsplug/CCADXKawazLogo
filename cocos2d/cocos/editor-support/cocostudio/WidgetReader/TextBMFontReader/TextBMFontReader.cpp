@@ -1,12 +1,15 @@
 
 
-#include "TextBMFontReader.h"
+#include "editor-support/cocostudio/WidgetReader/TextBMFontReader/TextBMFontReader.h"
 
+#include "2d/CCFontAtlasCache.h"
 #include "ui/UITextBMFont.h"
-#include "cocostudio/CocoLoader.h"
-#include "cocostudio/CSParseBinary_generated.h"
+#include "platform/CCFileUtils.h"
+#include "editor-support/cocostudio/CocoLoader.h"
+#include "editor-support/cocostudio/CSParseBinary_generated.h"
+#include "editor-support/cocostudio/LocalizationManager.h"
 
-#include "tinyxml2/tinyxml2.h"
+#include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
 
 USING_NS_CC;
@@ -39,6 +42,11 @@ namespace cocostudio
             instanceTextBMFontReader = new (std::nothrow) TextBMFontReader();
         }
         return instanceTextBMFontReader;
+    }
+    
+    void TextBMFontReader::destroyInstance()
+    {
+        CC_SAFE_DELETE(instanceTextBMFontReader);
     }
     
     void TextBMFontReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *cocoLoader, stExpCocoNode *cocoNode)
@@ -118,6 +126,7 @@ namespace cocostudio
         auto widgetOptions = *(Offset<WidgetOptions>*)(&temp);
         
         std::string text = "Fnt Text Label";
+        bool isLocalized = false;
         
         std::string path = "";
         std::string plistFlie = "";
@@ -133,6 +142,10 @@ namespace cocostudio
             if (name == "LabelText")
             {
                 text = value;
+            }
+            else if (name == "IsLocalized")
+            {
+                isLocalized = (value == "True") ? true : false;
             }
             
             attribute = attribute->Next();
@@ -179,7 +192,8 @@ namespace cocostudio
                                                                   builder->CreateString(path),
                                                                   builder->CreateString(plistFlie),
                                                                   resourceType),
-                                               builder->CreateString(text));
+                                               builder->CreateString(text),
+                                               isLocalized);
         
         return *(Offset<Table>*)(&options);
     }
@@ -190,29 +204,55 @@ namespace cocostudio
         auto options = (TextBMFontOptions*)textBMFontOptions;
         
         auto cmftDic = options->fileNameData();
+        bool fileExist = false;
+        std::string errorFilePath = "";
+        std::string errorContent = "";
+        std::string path = cmftDic->path()->c_str();
         int cmfType = cmftDic->resourceType();
         switch (cmfType)
         {
             case 0:
             {
-                const char* cmfPath = cmftDic->path()->c_str();
-                labelBMFont->setFntFile(cmfPath);
+                if (FileUtils::getInstance()->isFileExist(path))
+                {
+                    FontAtlas* newAtlas = FontAtlasCache::getFontAtlasFNT(path);
+                    if (newAtlas)
+                    {
+                        fileExist = true;
+                    }
+                    else
+                    {
+                        errorContent = "has problem";
+                        fileExist = false;
+                    }
+                }
                 break;
             }
-                
-            case 1:
-                CCLOG("Wrong res type of LabelAtlas!");
-                break;
                 
             default:
                 break;
         }
+        if (fileExist)
+        {
+            labelBMFont->setFntFile(path);
+        }
         
         std::string text = options->text()->c_str();
-        labelBMFont->setString(text);
+        bool isLocalized = options->isLocalized() != 0;
+        if (isLocalized)
+        {
+            ILocalizationManager* lm = LocalizationHelper::getCurrentManager();
+            labelBMFont->setString(lm->getLocalizationString(text));
+        }
+        else
+        {
+            labelBMFont->setString(text);
+        }
         
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
+        
+        labelBMFont->ignoreContentAdaptWithSize(true);
     }
     
     Node* TextBMFontReader::createNodeWithFlatBuffers(const flatbuffers::Table *textBMFontOptions)

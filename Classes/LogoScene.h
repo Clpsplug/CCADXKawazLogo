@@ -23,7 +23,7 @@ public:
     static cocos2d::Scene* createScene();
     
     void onEnterTransitionDidFinish() override;
-    void update(float dt);
+    void update(float dt) override;
     
     cocos2d::Action* createSequence(float delay);
     

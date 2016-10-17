@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 Copyright (c) 2013 cocos2d-x.org
 
 http://www.cocos2d-x.org
@@ -27,23 +27,28 @@ THE SOFTWARE.
 
 #include <unordered_map>
 #include "base/CCMap.h"
+#include "base/CCData.h"
 
-#include "cocostudio/DictionaryHelper.h"
-#include "CCTimelineMacro.h"
-#include "cocostudio/CocosStudioExport.h"
+#include "editor-support/cocostudio/DictionaryHelper.h"
+#include "editor-support/cocostudio/ActionTimeline/CCTimelineMacro.h"
+#include "editor-support/cocostudio/CocosStudioExport.h"
 
 namespace flatbuffers
 {
-    struct FlatBufferBuilder;
+    class FlatBufferBuilder;
     
     struct NodeAction;
     struct TimeLine;
-    struct TimeLineBoolFrame;
-    struct TimeLineIntFrame;
-    struct TimeLineStringFrame;
-    struct TimeLinePointFrame;
-    struct TimeLineColorFrame;
-    struct TimeLineTextureFrame;
+    struct PointFrame;
+    struct ScaleFrame;
+    struct ColorFrame;
+    struct TextureFrame;
+    struct EventFrame;
+    struct IntFrame;
+    struct BoolFrame;
+    struct InnerActionFrame;
+    struct EasingData;
+    struct BlendFrame;
 }
 
 NS_TIMELINE_BEGIN
@@ -54,7 +59,8 @@ class Frame;
 
 class CC_STUDIO_DLL ActionTimelineCache
 {
-public:
+public:    
+    
     /** Gets the singleton */
     static ActionTimelineCache* getInstance();
 
@@ -72,12 +78,16 @@ public:
 
     /** Clone a action with the specified name from the container. */
     ActionTimeline* createActionFromJson(const std::string& fileName);
+    ActionTimeline* createActionFromContent(const std::string& fileName, const std::string& content);
 
     ActionTimeline* loadAnimationActionWithFile(const std::string& fileName);
     ActionTimeline* loadAnimationActionWithContent(const std::string&fileName, const std::string& content);
     
     ActionTimeline* createActionWithFlatBuffersFile(const std::string& fileName);
+    ActionTimeline* createActionWithDataBuffer(cocos2d::Data data, const std::string &fileName);
+
     ActionTimeline* loadAnimationActionWithFlatBuffersFile(const std::string& fileName);
+    ActionTimeline* loadAnimationWithDataBuffer(const cocos2d::Data& data, const std::string& fileName);
     
     ActionTimeline* createActionWithFlatBuffersForSimulator(const std::string& fileName);
     
@@ -100,17 +110,22 @@ protected:
     
     
     Timeline* loadTimelineWithFlatBuffers(const flatbuffers::TimeLine* flatbuffers);
-    
-    Frame* loadVisibleFrameWithFlatBuffers      (const flatbuffers::TimeLineBoolFrame* flatbuffers);
-    Frame* loadZOrderFrameWithFlatBuffers       (const flatbuffers::TimeLineIntFrame* flatbuffers);
-    Frame* loadRotationSkewFrameWithFlatBuffers (const flatbuffers::TimeLinePointFrame* flatbuffers);
-    Frame* loadEventFrameWithFlatBuffers        (const flatbuffers::TimeLineStringFrame* flatbuffers);
-    Frame* loadAnchorPointFrameWithFlatBuffers  (const flatbuffers::TimeLinePointFrame* flatbuffers);
-    Frame* loadPositionFrameWithFlatBuffers     (const flatbuffers::TimeLinePointFrame* flatbuffers);
-    Frame* loadScaleFrameWithFlatBuffers        (const flatbuffers::TimeLinePointFrame* flatbuffers);
-    Frame* loadColorFrameWithFlatBuffers        (const flatbuffers::TimeLineColorFrame* flatbuffers);
-    Frame* loadTextureFrameWithFlatBuffers      (const flatbuffers::TimeLineTextureFrame* flatbuffers);
 
+    Frame* loadVisibleFrameWithFlatBuffers      (const flatbuffers::BoolFrame* flatbuffers);
+    Frame* loadPositionFrameWithFlatBuffers     (const flatbuffers::PointFrame* flatbuffers);
+    Frame* loadScaleFrameWithFlatBuffers        (const flatbuffers::ScaleFrame* flatbuffers);
+    Frame* loadRotationSkewFrameWithFlatBuffers (const flatbuffers::ScaleFrame* flatbuffers);
+    Frame* loadColorFrameWithFlatBuffers        (const flatbuffers::ColorFrame* flatbuffers);
+    Frame* loadTextureFrameWithFlatBuffers      (const flatbuffers::TextureFrame* flatbuffers);
+    Frame* loadEventFrameWithFlatBuffers        (const flatbuffers::EventFrame* flatbuffers);
+    Frame* loadAlphaFrameWithFlatBuffers        (const flatbuffers::IntFrame* flatbuffers);
+    Frame* loadAnchorPointFrameWithFlatBuffers  (const flatbuffers::ScaleFrame* flatbuffers);
+    Frame* loadZOrderFrameWithFlatBuffers       (const flatbuffers::IntFrame* flatbuffers);
+    Frame* loadInnerActionFrameWithFlatBuffers  (const flatbuffers::InnerActionFrame* flatbuffers);
+    Frame* loadBlendFrameWithFlatBuffers        (const flatbuffers::BlendFrame* flatbuffers);
+    void loadEasingDataWithFlatBuffers(Frame* frame, const flatbuffers::EasingData* flatbuffers);
+
+    inline ActionTimeline* createActionWithDataBuffer(const cocos2d::Data& data);
 protected:
 
     typedef std::function<Frame*(const rapidjson::Value& json)> FrameCreateFunc;
